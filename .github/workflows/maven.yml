@@ -1,5 +1,4 @@
-# Este workflow compilará um projeto Java com Maven, executará os testes e cache/restore dependências para melhorar o tempo de execução do workflow
-name: Java CI with Maven
+name: Java CI with Maven and JaCoCo
 
 on:
   push:
@@ -22,5 +21,8 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: Run Tests
-      run: mvn test
+    - name: Run Tests and Generate JaCoCo Report
+      run: |
+        mvn test jacoco:report
+        echo "=== JaCoCo Coverage Report ==="
+        cat ./target/site/jacoco/index.html  # Imprime a cobertura no console
